@@ -1,0 +1,11 @@
+parameters:
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    tmpDir: var/cache/dev/phpstan
+    paths:
+        - src/
+        - tests/
+    autoload_files:
+        - vendor/autoload.php
+    bootstrap:
+        tests/bootstrap.php

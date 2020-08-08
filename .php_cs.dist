@@ -1,0 +1,15 @@
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setFinder(PhpCsFixer\Finder::create()->in('app/src/'))
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'concat_space' => ['spacing' => 'one'],
+        'cast_spaces' => ['space' => 'none'],
+        'phpdoc_inline_tag' => false,
+        'phpdoc_no_useless_inheritdoc' => false,
+        'return_type_declaration' => ['space_before' => 'one'],
+        'no_superfluous_phpdoc_tags' => ['allow_mixed' => true, 'allow_unused_params' => true],
+        'phpdoc_align' => ['align' => 'left'],
+    ]);

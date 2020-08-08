@@ -1,0 +1,132 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx:1.13-alpine
+    volumes:
+      - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
+      - ${PWD}/docker/${APP_ENV}/nginx/conf.d/:/mnt/host/
+    environment:
+      DOCKER_PROJECT_DIR: ${DOCKER_PROJECT_DIR}
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      FAST_CGI_SERVER: php-fpm:9000
+    command: >
+      sh -c "envsubst '$${DOCKER_PROJECT_DIR} $${SITE_DOMAIN} $${FAST_CGI_SERVER}' < /mnt/host/app.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    ports:
+      - ${HTTP_PORT}:80
+    networks:
+      internal:
+        aliases:
+          - nginx
+
+  php-fpm:
+    build:
+      context: ${PWD}/docker/${APP_ENV}/php
+      target: php-dev
+      args:
+        OS: ${OS}
+        UID: ${UID}
+        UNAME: ${UNAME}
+        UPASS: ${UPASS}
+        DOCKER_PROJECT_DIR: ${DOCKER_PROJECT_DIR}
+    user: ${UID}
+    working_dir: ${DOCKER_PROJECT_DIR}
+    ports:
+      - 9012:9012
+    volumes:
+      - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
+    environment:
+      APP_ENV: ${APP_ENV}
+      DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8&charset=utf8
+      XDEBUG_CONFIG: idekey=PHPSTORM remote_host=192.168.0.111 profiler_enable=1 remote_enable=1 remote_autostart=1 remote_port=9000
+      CENTRIFUGO_SECRET: ${CENTRIFUGO_SECRET}
+      CENTRIFUGO_API_KEY: ${CENTRIFUGO_API_KEY}
+      CENTRIFUGO_WS_HOST: ws://${SITE_DOMAIN}:8083
+      CENTRIFUGO_API_HOST: centrifugo:8000
+      MESSENGER_TRANSPORT_DSN: amqp://${MQ_USER}:${MQ_PASS}@rabbitmq:5672/%2f/messages
+    networks:
+      internal:
+        aliases:
+          - php-fpm
+
+  node-watch:
+    image: node:12.7-alpine
+    volumes:
+      - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
+    working_dir: ${DOCKER_PROJECT_DIR}
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && npm run watch"
+
+  node:
+    image: node:12.7-alpine
+    volumes:
+      - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
+    working_dir: ${DOCKER_PROJECT_DIR}
+
+  data_base:
+    image: mysql:8.0.17
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:3306
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ${LOCAL_PROJECT_DIR}/data_base:/var/lib/mysql
+      - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
+    networks:
+      internal:
+        aliases:
+          - data_base
+
+  rabbitmq:
+    image: rabbitmq:3.7-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_VHOST: ${MQ_VHOST}
+      RABBITMQ_DEFAULT_USER: ${MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${MQ_PASS}
+    networks:
+      internal:
+        aliases:
+          - rabbitmq
+
+  centrifugo:
+    build:
+      context: ${PWD}/docker/${APP_ENV}/centrifugo
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      CENTRIFUGO_SECRET: ${CENTRIFUGO_SECRET}
+      CENTRIFUGO_API_KEY: ${CENTRIFUGO_API_KEY}
+    volumes:
+      -  ${PWD}/docker/${APP_ENV}/centrifugo:/centrifugo
+    ports:
+      - 8083:8000
+    command: centrifugo --admin --admin_insecure
+    networks:
+      internal:
+        aliases:
+          - centrifugo
+
+  mailer:
+    image: mailhog/mailhog
+    ports:
+      - "8082:8025"
+    networks:
+      internal:
+        aliases:
+          - mailer
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  internal:
+    driver: bridge
