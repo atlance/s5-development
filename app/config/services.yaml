@@ -10,6 +10,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $fromAppEmail: '%env(resolve:MAILER_FROM_EMAIL)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -17,9 +19,12 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/Model/User/Entity/'
+            - '../src/Doctrine/Dbal/Type/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+
+    App\Model\User\Entity\UserRepository: ~
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -31,7 +36,13 @@ services:
     # please note that last definitions always *replace* previous ones
 
 # EventSubscriber ------------------------------------------------------------------------------------------------------
-    App\EventSubscriber\Knp\PagerSubscriber:
+    App\Event\Subscriber\Knp\PagerSubscriber:
         tags:
             - { name: 'knp_paginator.subscriber' }
 # END EventSubscriber --------------------------------------------------------------------------------------------------
+    reset_password_tokenizer_date_interval:
+        class: DateInterval
+        arguments: ['PT1H']
+
+    App\Model\User\Service\ResetPasswordTokenizer:
+        arguments: ['@reset_password_tokenizer_date_interval']

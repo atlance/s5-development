@@ -1,0 +1,6 @@
+{% extends 'mail.html.twig' %}
+
+{% block body %}
+    <p>Ссылка для сброса пароля:</p>
+    <p><a href="{{ url('web.auth.email.reset.password.confirm', {'token': token }) }}">Подтвердить</a></p>
+{% endblock %}

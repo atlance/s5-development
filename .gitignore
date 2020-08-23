@@ -2,10 +2,16 @@
 !/app/
 /app/*
 !/app/bin/
+/app/bin/*
+!/app/bin/console
+!/app/bin/phpunit
 !/app/config/
 !/app/migrations/
 !/app/public/
 /app/public/*
+!/app/public/css
+!/app/public/img
+!/app/public/js
 !/app/public/index.php
 !/app/src/
 !/app/templates/
@@ -30,5 +36,5 @@
 
 !**/.gitignore
 !**/.gitkeep
-!/.env.dist
+!**/.env.dist
 !**/*.md

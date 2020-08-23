@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <ul>
+        <li>{{ user.email }}</li>
+        <li>{{ user.status }}</li>
+        <li>{{ user.role }}</li>
+    </ul>
+
+{% endblock %}

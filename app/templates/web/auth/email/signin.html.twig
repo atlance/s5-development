@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="mobile-screen-wrapper">
+        <div class="mobile-screen">
+            <div class="header">
+                <h1>Аутентификация</h1>
+            </div>
+            <div class="logo"></div>
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form action="{{ path("web.auth.email.signin") }}" method="post" id="login-form">
+                {{ form_start(signInForm) }}
+                {{ form_widget(signInForm) }}
+                <input type="submit" id="_submit" name="_submit"  class="login-btn" value="Войти"/>
+                {{ form_end(signInForm) }}
+            </form>
+            <div class="other-login-options">
+                <div class="option" id="getRegistrationForm"><p class="option-text">Регистрация</p></div>
+            </div>
+            <form action="{{ path("web.auth.email.signup") }}" method="post" id="registration-form">
+                {{ form_start(signUpForm) }}
+                {{ form_widget(signUpForm) }}
+                <input type="submit" class="login-btn" value="Регистрация" />
+                {{ form_end(signUpForm) }}
+            </form>
+            <div class="other-registration-options">
+                <div class="option" id="getLoginForm"><p class="option-text">Войти</p></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

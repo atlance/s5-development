@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="mobile-screen-wrapper">
+        <div class="mobile-screen">
+            <div class="header">
+                <h1>Введите новый пароль.</h1>
+            </div>
+            <div class="logo"></div>
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form method="post" id="login-form">
+                {{ form_start(resetPasswordForm) }}
+                {{ form_widget(resetPasswordForm) }}
+                <input type="submit" class="login-btn" value="Изменить"/>
+                {{ form_end(resetPasswordForm) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

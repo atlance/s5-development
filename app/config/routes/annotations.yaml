@@ -1,6 +1,18 @@
-controllers:
-    resource: ../../src/Controller/
-    type: annotation
+web.index:
+    path:       /
+    controller: App\Controller\Web\IndexController
+
+auth_email:
+    resource:    ../../src/Controller/Web/User/UseCase/Auth/Email
+    type:        annotation
+    name_prefix: web.auth.email.
+    prefix:      /auth/email
+
+user_profile:
+    resource:    ../../src/Controller/Web/User/UseCase/Profile
+    type:        annotation
+    name_prefix: web.user.profile.
+    prefix:      /profile
 
 kernel:
     resource: ../../src/Kernel.php

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="mobile-screen-wrapper">
+        <div class="mobile-screen">
+            <div class="header">
+                <h1>Забыли пароль?</h1>
+            </div>
+            <div class="logo"></div>
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form action="{{ path("web.auth.email.reset.password") }}" method="post" id="login-form">
+                {{ form_start(resetPasswordTokenForm) }}
+                {{ form_widget(resetPasswordTokenForm) }}
+                <input type="submit" class="login-btn" value="Восстановить"/>
+                {{ form_end(resetPasswordTokenForm) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

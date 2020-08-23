@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <form method="post" id="edit-profile-form" class="row">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" id="_submit" class="btn btn-success" value="Сохранить"/>
+            {{ form_end(form) }}
+        </form>
+    </div>
+{% endblock %}

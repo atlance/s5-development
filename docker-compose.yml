@@ -39,11 +39,11 @@ services:
       APP_ENV: ${APP_ENV}
       DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8&charset=utf8
       XDEBUG_CONFIG: idekey=PHPSTORM remote_host=192.168.0.111 profiler_enable=1 remote_enable=1 remote_autostart=1 remote_port=9000
+      PHP_IDE_CONFIG: serverName=${SITE_DOMAIN}
       CENTRIFUGO_SECRET: ${CENTRIFUGO_SECRET}
       CENTRIFUGO_API_KEY: ${CENTRIFUGO_API_KEY}
       CENTRIFUGO_WS_HOST: ws://${SITE_DOMAIN}:8083
       CENTRIFUGO_API_HOST: centrifugo:8000
-      MESSENGER_TRANSPORT_DSN: amqp://${MQ_USER}:${MQ_PASS}@rabbitmq:5672/%2f/messages
     networks:
       internal:
         aliases:
@@ -117,7 +117,7 @@ services:
   mailer:
     image: mailhog/mailhog
     ports:
-      - "8082:8025"
+      - 8082:8025
     networks:
       internal:
         aliases:

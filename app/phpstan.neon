@@ -1,6 +1,7 @@
 parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
     tmpDir: var/cache/dev/phpstan
     paths:
         - src/
