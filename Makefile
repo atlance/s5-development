@@ -2,6 +2,7 @@
 .env:
 	[ -f .env ] || cp .env.dist .env
 	[ -f app/.env ] || cp app/.env.dist app/.env
+	[ -f docker-compose.yml ] || cp docker-compose.yml.dist docker-compose.yml
 
 include .env
 export
@@ -10,7 +11,7 @@ up: docker-up ready
 down: unready docker-down
 down-clear: unready docker-down-clear clear-tmp
 restart: unready docker-down docker-up ready
-init: docker-down-clear docker-pull docker-build docker-up app-init ready up-supervisor git-hook
+init: .env docker-down-clear docker-pull docker-build docker-up app-init ready up-supervisor git-hook
 
 docker-up:
 	docker-compose up -d
@@ -49,9 +50,7 @@ git-hook:
 	chmod 777 .git/hooks/pre-commit
 
 clear-tmp:
-	rm -rf app/var/cache/*
-	rm -rf app/var/log/*
-	rm -rf app/var/run/*
+	docker-compose run -u root php-fpm /bin/sh -c 'rm -rf var/cache/* var/log/* var/run/*'
 
 php-bash:
 	docker-compose run php-fpm bash

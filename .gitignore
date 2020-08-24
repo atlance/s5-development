@@ -26,7 +26,6 @@
 
 
 !/docker/
-!/docker-compose.yml
 !/.dockerignore
 !/.php_cs.dist
 !/app/phpstan.neon
@@ -36,5 +35,5 @@
 
 !**/.gitignore
 !**/.gitkeep
-!**/.env.dist
+!**/*.dist
 !**/*.md
