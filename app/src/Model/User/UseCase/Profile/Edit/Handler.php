@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Model\User\UseCase\Profile\Edit;
 
 use App\Doctrine\Dbal\Type\Email;
+use App\Doctrine\Dbal\Type\Uuid;
 use App\Model\Flusher;
-use App\Model\User\Entity\Id;
 use App\Model\User\Entity\Name;
 use App\Model\User\Entity\UserRepository;
 use App\Model\User\Service\PasswordHasher;
@@ -26,7 +26,7 @@ class Handler
 
     public function handle(Command $command) : void
     {
-        $user = $this->repository->get(new Id($command->id));
+        $user = $this->repository->get(new Uuid($command->id));
         $user->editProfile(
             new Email($command->email),
             new Name($command->firstName, $command->lastName),

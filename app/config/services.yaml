@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-
+    site_domain: '%env(resolve:SITE_DOMAIN)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -46,3 +46,8 @@ services:
 
     App\Model\User\Service\ResetPasswordTokenizer:
         arguments: ['@reset_password_tokenizer_date_interval']
+# Utils ----------------------------------------------------------------------------------------------------------------
+    App\Utils\Http\Factory\SubDomain:
+        factory: App\Utils\Http\Factory\SubDomainFactory::create
+        arguments: ['@request_stack', '%env(resolve:SITE_DOMAIN)%']
+# END Utils ------------------------------------------------------------------------------------------------------------

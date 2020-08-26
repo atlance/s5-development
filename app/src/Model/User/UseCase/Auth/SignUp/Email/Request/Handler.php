@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Model\User\UseCase\Auth\SignUp\Email\Request;
 
 use App\Doctrine\Dbal\Type\Email;
+use App\Doctrine\Dbal\Type\Uuid;
 use App\Model\Flusher;
-use App\Model\User\Entity\Id;
 use App\Model\User\Entity\Name;
 use App\Model\User\Entity\User;
 use App\Model\User\Entity\UserRepository;
@@ -51,7 +51,7 @@ class Handler
         }
 
         $user = User::signUpByEmail(
-            Id::generate(),
+            Uuid::generate(),
             new Name($command->firstName, $command->lastName),
             $email,
             new \DateTimeImmutable(),

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Model\User\Entity;
+namespace App\Doctrine\Dbal\Type;
 
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use Webmozart\Assert\Assert;
 
-class Id
+class Uuid
 {
     private string $value;
 
     public function __construct(string $value)
     {
-        Assert::true(Uuid::isValid($value), 'Not valid UUID');
+        Assert::true(RamseyUuid::isValid($value), 'Not valid UUID');
         $this->value = $value;
     }
 
@@ -24,7 +24,7 @@ class Id
 
     public static function generate() : self
     {
-        return new self(Uuid::uuid4()->toString());
+        return new self(RamseyUuid::uuid4()->toString());
     }
 
     public function __toString() : string

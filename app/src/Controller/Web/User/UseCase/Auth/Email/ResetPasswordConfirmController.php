@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Web\User\UseCase\Auth\Email;
 
-use App\Annotation\Uuid;
+use App\Annotation\UuidPattern;
 use App\Model\User\UseCase\Auth\Reset\Password;
 use App\ReadModel\User\Auth\AuthView;
 use App\ReadModel\User\UserFetcher;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
- * @Route("/reset-password/confirm/{token}", name="reset.password.confirm", requirements={"token"=Uuid::EXP_PATTERN})
+ * @Route("/reset-password/confirm/{token}", name="reset.password.confirm", requirements={"token"=UuidPattern::VALUE})
  */
 class ResetPasswordConfirmController extends AbstractController
 {

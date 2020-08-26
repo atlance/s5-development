@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\User\Entity;
 
 use App\Doctrine\Dbal\Type\Email;
+use App\Doctrine\Dbal\Type\Uuid;
+use App\Model\Company\Entity\Company;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,9 +21,15 @@ class User
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="id", type="user_id")
+     * @ORM\Column(name="id", type="uuid")
      */
-    private Id $id;
+    private Uuid $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Model\Company\Entity\Company")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=true)
+     */
+    private ? Company $company;
 
     /**
      * @ORM\Column(name="email", type="email", length=32, unique=true, nullable=true)
@@ -63,7 +71,7 @@ class User
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(Id $id, Name $name, Email $email = null)
+    public function __construct(Uuid $id, Name $name, Email $email = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -71,9 +79,14 @@ class User
         $this->status = new Status();
     }
 
-    public function getId() : Id
+    public function getId() : Uuid
     {
         return $this->id;
+    }
+
+    public function getCompany() : ?Company
+    {
+        return $this->company;
     }
 
     public function getEmail() : ? Email
@@ -177,7 +190,7 @@ class User
     }
 
     public static function signUpByEmail(
-        Id $id,
+        Uuid $id,
         Name $name,
         Email $email,
         DateTimeImmutable $date,

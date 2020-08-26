@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Web\User\UseCase\Auth\Email;
 
-use App\Model\User\UseCase\Auth\SignIn;
 use App\Model\User\UseCase\Auth\SignUp;
 use DomainException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/signup/request", name="signup", methods={"GET", "POST"})
+ * @Route("/signup", name="signup", methods={"GET", "POST"})
  */
 class SignUpRequestController extends AbstractController
 {
@@ -35,10 +34,7 @@ class SignUpRequestController extends AbstractController
             }
         }
 
-        return $this->render(
-            'web/auth/email/signin.html.twig', [
-            'email' => $command->email,
-            'signInForm' => $this->createForm(SignIn\Email\Request\Form::class)->createView(),
+        return $this->render('web/auth/email/signup.html.twig', [
             'signUpForm' => $signUpForm->createView(),
         ]);
     }

@@ -14,14 +14,14 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <form action="{{ path("web.auth.email.signin") }}" method="post" id="login-form">
-                {{ form_start(signInForm) }}
-                {{ form_widget(signInForm) }}
-                <input type="submit" id="_submit" name="_submit"  class="login-btn" value="Войти"/>
-                {{ form_end(signInForm) }}
+            <form action="{{ path("web.auth.email.signup") }}" method="post" id="login-form">
+                {{ form_start(signUpForm) }}
+                {{ form_widget(signUpForm) }}
+                <input type="submit" class="login-btn" value="Регистрация" />
+                {{ form_end(signUpForm) }}
             </form>
             <div class="other-registration-options">
-                <div class="option" id="getLoginForm"><p class="option-text">Войти</p></div>
+                <div class="option" id="getLoginForm"><p class="option-text">Регистрация</p></div>
             </div>
         </div>
     </div>

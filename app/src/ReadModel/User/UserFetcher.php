@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ReadModel\User;
 
 use App\Doctrine\Dbal\Type\Email;
-use App\Model\User\Entity\Id;
+use App\Doctrine\Dbal\Type\Uuid;
 use App\ReadModel\Fetcher;
 use App\ReadModel\User\Auth\AuthView;
 use Doctrine\DBAL\FetchMode;
@@ -95,7 +95,7 @@ class UserFetcher extends Fetcher
         throw new \DomainException("User by email: {$email->getValue()} - not found");
     }
 
-    public function get(Id $id) : AuthView
+    public function get(Uuid $id) : AuthView
     {
         $qb = $this->getQueryBuilder()
             ->select(['id', 'email', 'password_hash', 'status', 'role'])

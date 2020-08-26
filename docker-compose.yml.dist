@@ -37,6 +37,7 @@ services:
       - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
     environment:
       APP_ENV: ${APP_ENV}
+      SITE_DOMAIN: ${SITE_DOMAIN}
       DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8&charset=utf8
       XDEBUG_CONFIG: idekey=PHPSTORM remote_host=192.168.0.111 profiler_enable=1 remote_enable=1 remote_autostart=1 remote_port=9000
       PHP_IDE_CONFIG: serverName=${SITE_DOMAIN}

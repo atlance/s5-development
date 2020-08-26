@@ -1,18 +1,29 @@
+web.subdomain:
+    resource:    ../../src/Controller/Web/SubDomain
+    type:        annotation
+    name_prefix: web.subdomain.
+    host:       "{subdomain}.%site_domain%"
+    requirements:
+        subdomain: \S+
+
 web.index:
     path:       /
     controller: App\Controller\Web\IndexController
+    host:       "%site_domain%"
 
 auth_email:
     resource:    ../../src/Controller/Web/User/UseCase/Auth/Email
     type:        annotation
     name_prefix: web.auth.email.
     prefix:      /auth/email
+    host:       "%site_domain%"
 
 user_profile:
     resource:    ../../src/Controller/Web/User/UseCase/Profile
     type:        annotation
     name_prefix: web.user.profile.
     prefix:      /profile
+    host:       "%site_domain%"
 
 kernel:
     resource: ../../src/Kernel.php

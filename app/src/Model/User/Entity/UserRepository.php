@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\User\Entity;
 
 use App\Doctrine\Dbal\Type\Email;
+use App\Doctrine\Dbal\Type\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -24,7 +25,7 @@ class UserRepository
         $this->em->persist($user);
     }
 
-    public function get(Id $id) : User
+    public function get(Uuid $id) : User
     {
         $user = $this->repository->find($id);
         if ($user instanceof User) {
