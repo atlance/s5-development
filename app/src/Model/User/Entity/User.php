@@ -27,7 +27,7 @@ class User
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Model\Company\Entity\Company")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
      */
     private ? Company $company;
 
