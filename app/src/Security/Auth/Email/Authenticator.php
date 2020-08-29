@@ -64,7 +64,7 @@ class Authenticator extends AbstractFormLoginAuthenticator
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
 
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid authenticate csrf token.');
         }
 
         return $userProvider->loadUserByUsername($credentials['email']);

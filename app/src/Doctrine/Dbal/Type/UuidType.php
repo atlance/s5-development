@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Doctrine\Dbal\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\Type;
 
-class UuidType extends StringType
+class UuidType extends Type
 {
     public const NAME = 'uuid';
 
@@ -31,10 +31,13 @@ class UuidType extends StringType
         return true;
     }
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) : string
     {
-        $fieldDeclaration['length'] = 36;
+        return $platform->getGuidTypeDeclarationSQL($fieldDeclaration);
+    }
 
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+    public function getDefaultLength(AbstractPlatform $platform) : int
+    {
+        return 36;
     }
 }

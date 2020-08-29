@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Model\SubDomain\Entity;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
+use Doctrine\DBAL\Types\Type;
 
-class IdType extends StringType
+class IdType extends Type
 {
     public const NAME = 'subdomain';
 
@@ -31,10 +31,13 @@ class IdType extends StringType
         return true;
     }
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) : string
     {
-        $fieldDeclaration['length'] = 16;
-
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+    }
+
+    public function getDefaultLength(AbstractPlatform $platform) : int
+    {
+        return 16;
     }
 }

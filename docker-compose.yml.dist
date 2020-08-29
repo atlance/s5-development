@@ -38,7 +38,7 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       SITE_DOMAIN: ${SITE_DOMAIN}
-      DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8&charset=utf8
+      DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8.0.17&charset=utf8mb4
       XDEBUG_CONFIG: idekey=PHPSTORM remote_host=192.168.0.111 profiler_enable=1 remote_enable=1 remote_autostart=1 remote_port=9000
       PHP_IDE_CONFIG: serverName=${SITE_DOMAIN}
       CENTRIFUGO_SECRET: ${CENTRIFUGO_SECRET}
