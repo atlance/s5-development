@@ -42,6 +42,7 @@ app-init:
 	docker-compose run --rm node npm rebuild node-sass
 	docker-compose run --rm php-fpm composer install
 	docker-compose run --rm php-fpm bin/console doctrine:migration:migrate --no-interaction
+	docker-compose run --rm php-fpm bin/console doctrine:fixtures:load --no-interaction
 	docker-compose run --rm php-fpm composer phpstan
 	docker-compose run --rm php-fpm bin/phpunit
 

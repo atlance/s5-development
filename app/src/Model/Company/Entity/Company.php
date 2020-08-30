@@ -50,4 +50,11 @@ class Company
     {
         return $this->subDomain;
     }
+
+    public function setSubDomain(?SubDomain $subDomain) : self
+    {
+        $this->subDomain = $subDomain;
+
+        return $this;
+    }
 }

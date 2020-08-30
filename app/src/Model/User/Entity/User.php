@@ -140,6 +140,15 @@ class User
         $this->confirmToken = null;
     }
 
+    public function toAdmin() : void
+    {
+        if ($this->role->isAdmin()) {
+            throw new \DomainException('User is admin.');
+        }
+
+        $this->role = Role::admin();
+    }
+
     public function requestPasswordReset(Token $token, DateTimeImmutable $date) : Token
     {
         if (!$this->status->isActive()) {
@@ -175,6 +184,13 @@ class User
         $this->email = $email;
         $this->name = $name;
         $this->passwordHash = $hash;
+    }
+
+    public function setCompany(?Company $company) : self
+    {
+        $this->company = $company;
+
+        return $this;
     }
 
     /**
