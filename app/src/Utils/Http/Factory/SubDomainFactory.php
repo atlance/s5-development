@@ -4,25 +4,29 @@ declare(strict_types=1);
 
 namespace App\Utils\Http\Factory;
 
+use App\Model\SubDomain\Entity\Id;
+use App\ReadModel\SubDomain\SubDomainFetcher;
+use App\ReadModel\SubDomain\View\SubDomainFromRequestView;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class SubDomainFactory
 {
-    public function create(RequestStack $stack, string $domain) : SubDomain
+    private SubDomainFetcher $fetcher;
+    private string $domain;
+
+    public function __construct(SubDomainFetcher $fetcher, string $domain)
     {
-        if ($stack->getMasterRequest() instanceof Request) {
-            $subDomain = str_replace('.' . $domain, '', $stack->getMasterRequest()->getHttpHost());
+        $this->fetcher = $fetcher;
+        $this->domain = $domain;
+    }
 
-            if ($domain === $subDomain) {
-                return new SubDomain('');
-            }
-
-            return new SubDomain(
-                str_replace('.' . $domain, '', $stack->getMasterRequest()->getHttpHost())
-            );
+    public function createFromRequest(Request $request) : SubDomainFromRequestView
+    {
+        $subDomain = str_replace('.' . $this->domain, '', $request->getHttpHost());
+        if ($subDomain === $this->domain) {
+            throw new \DomainException("subdomain can't be empty.");
         }
 
-        throw new \DomainException('master request not specified.');
+        return $this->fetcher->getSubDomainFromRequest(new Id($subDomain));
     }
 }

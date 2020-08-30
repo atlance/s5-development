@@ -2,9 +2,9 @@ web.subdomain:
     resource:    ../../src/Controller/Web/SubDomain
     type:        annotation
     name_prefix: web.subdomain.
-    host:       "{subdomain}.%site_domain%"
+    host:       "{subDomain}.%site_domain%"
     requirements:
-        subdomain: \S+
+        subDomain: \S+
 
 web.index:
     path:       /
