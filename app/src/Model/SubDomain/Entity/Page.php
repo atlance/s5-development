@@ -20,6 +20,7 @@ class Page
      * @ORM\Column(name="id", type="uuid")
      */
     private Uuid $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Model\SubDomain\Entity\SubDomain")
      * @ORM\JoinColumn(name="sub_domain", referencedColumnName="id", nullable=false)

@@ -25,7 +25,7 @@ class SubDomainPageFixtures extends Fixture implements DependentFixtureInterface
             $subDomain,
             new \DateTimeImmutable(),
             '/page/admin',
-            'Hi {{ app.user.username }}'
+            'Hi{% if app.user is not null %} {{ app.user.username }}!{% else %}.{% endif %}'
         );
 
         $manager->persist($page);
