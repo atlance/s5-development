@@ -6,6 +6,14 @@ web.subdomain:
     requirements:
         subDomain: \S+
 
+web.subdomain.page:
+    resource:    ../../src/Controller/Web/SubDomain/Page
+    type:        annotation
+    name_prefix: web.subdomain.
+    host:       "{subDomain}.%site_domain%"
+    requirements:
+        subDomain: \S+
+
 web.index:
     path:       /
     controller: App\Controller\Web\IndexController
