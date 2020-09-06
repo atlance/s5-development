@@ -41,10 +41,21 @@ app-init:
 	docker-compose run --rm node yarn install
 	docker-compose run --rm node npm rebuild node-sass
 	docker-compose run --rm php-fpm composer install
+	docker-compose run --rm php-fpm bin/console doctrine:database:create --if-not-exists --no-interaction
+	docker-compose run --rm php-fpm bin/console doctrine:database:create --if-not-exists --no-interaction --connection=log
 	docker-compose run --rm php-fpm bin/console doctrine:migration:migrate --no-interaction
+	docker-compose run --rm php-fpm bin/console doctrine:migration:migrate --no-interaction --em=log --configuration='config/packages/migrations/log.config.yaml'
 	docker-compose run --rm php-fpm bin/console doctrine:fixtures:load --no-interaction
 	docker-compose run --rm php-fpm composer phpstan
 	docker-compose run --rm php-fpm bin/phpunit
+
+doc-mig-diff:
+	docker-compose run --rm php-fpm bin/console doctrine:migration:diff --no-interaction
+	docker-compose run --rm php-fpm bin/console doctrine:migration:diff --no-interaction --em=log --configuration='config/packages/migrations/log.config.yaml'
+
+doc-mig-mig:
+	docker-compose run --rm php-fpm bin/console doctrine:migration:migrate --no-interaction
+	docker-compose run --rm php-fpm bin/console doctrine:migration:migrate --no-interaction --em=log --configuration='config/packages/migrations/log.config.yaml'
 
 git-hook:
 	cp pre-commit .git/hooks/pre-commit

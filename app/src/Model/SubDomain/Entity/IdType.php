@@ -33,6 +33,8 @@ class IdType extends Type
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) : string
     {
+        $fieldDeclaration['length'] = $this->getDefaultLength($platform);
+
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
 

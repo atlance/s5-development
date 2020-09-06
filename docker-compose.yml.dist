@@ -38,7 +38,8 @@ services:
     environment:
       APP_ENV: ${APP_ENV}
       SITE_DOMAIN: ${SITE_DOMAIN}
-      DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8.0.17&charset=utf8mb4
+      DATABASE_URL: mysql://root:${DB_PASSWORD}@data_base:3306/${DB_NAME}?serverVersion=8.0.17&charset=utf8mb4
+      DATABASE_LOG_URL: mysql://root:${DB_PASSWORD}@data_base:3306/${DB_LOG_NAME}?serverVersion=8.0.17&charset=utf8mb4
       XDEBUG_CONFIG: idekey=PHPSTORM remote_host=192.168.0.111 profiler_enable=1 remote_enable=1 remote_autostart=1 remote_port=9000
       PHP_IDE_CONFIG: serverName=${SITE_DOMAIN}
       CENTRIFUGO_SECRET: ${CENTRIFUGO_SECRET}
@@ -66,13 +67,12 @@ services:
   data_base:
     image: mysql:8.0.17
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    user: root
     ports:
       - ${DB_PORT}:3306
-    command: --default-authentication-plugin=mysql_native_password
+    command: >
+      --default-authentication-plugin=mysql_native_password
     volumes:
       - ${LOCAL_PROJECT_DIR}/data_base:/var/lib/mysql
       - ${LOCAL_PROJECT_DIR}:${DOCKER_PROJECT_DIR}/:cached
